@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>js/garden | 胡灰灰的技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="function Vector(a,b){this.x=a;this.y=b}Vector.prototype={rotate:function(b){var a=this.x;var c=this.y;this.x=Math.cos(b)*a-Math.sin(b)*c;this.y=Math.sin(b)*a+Math.cos(b)*c;return this},mult:function(a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js&#x2F;garden">
+<meta property="og:url" content="http:&#x2F;&#x2F;hhh.com&#x2F;2019&#x2F;11&#x2F;10&#x2F;js&#x2F;garden&#x2F;index.html">
+<meta property="og:site_name" content="胡灰灰的技术博客">
+<meta property="og:description" content="function Vector(a,b){this.x=a;this.y=b}Vector.prototype={rotate:function(b){var a=this.x;var c=this.y;this.x=Math.cos(b)*a-Math.sin(b)*c;this.y=Math.sin(b)*a+Math.cos(b)*c;return this},mult:function(a">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-11-10T06:05:27.057Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="胡灰灰的技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">胡灰灰的技术博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">笔记、解惑、分享知识</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hhh.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js/garden" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/10/js/garden/" class="article-date">
+  <time datetime="2019-11-10T06:05:27.057Z" itemprop="datePublished">2019-11-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js/garden
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        function Vector(a,b){this.x=a;this.y=b}Vector.prototype={rotate:function(b){var a=this.x;var c=this.y;this.x=Math.cos(b)*a-Math.sin(b)*c;this.y=Math.sin(b)*a+Math.cos(b)*c;return this},mult:function(a){this.x*=a;this.y*=a;return this},clone:function(){return new Vector(this.x,this.y)},length:function(){return Math.sqrt(this.x*this.x+this.y*this.y)},subtract:function(a){this.x-=a.x;this.y-=a.y;return this},set:function(a,b){this.x=a;this.y=b;return this}};function Petal(a,f,b,e,c,d){this.stretchA=a;this.stretchB=f;this.startAngle=b;this.angle=e;this.bloom=d;this.growFactor=c;this.r=1;this.isfinished=false}Petal.prototype={draw:function(){var a=this.bloom.garden.ctx;var e,d,c,b;e=new Vector(0,this.r).rotate(Garden.degrad(this.startAngle));d=e.clone().rotate(Garden.degrad(this.angle));c=e.clone().mult(this.stretchA);b=d.clone().mult(this.stretchB);a.strokeStyle=this.bloom.c;a.beginPath();a.moveTo(e.x,e.y);a.bezierCurveTo(c.x,c.y,b.x,b.y,d.x,d.y);a.stroke()},render:function(){if(this.r<=this.bloom.r){this.r+=this.growFactor;this.draw()}else{this.isfinished=true}}};function Bloom(e,d,f,a,b){this.p=e;this.r=d;this.c=f;this.pc=a;this.petals=[];this.garden=b;this.init();this.garden.addBloom(this)}Bloom.prototype={draw:function(){var c,b=true;this.garden.ctx.save();this.garden.ctx.translate(this.p.x,this.p.y);for(var a=0;a<this.petals.length;a++){c=this.petals[a];c.render();b*=c.isfinished}this.garden.ctx.restore();if(b==true){this.garden.removeBloom(this)}},init:function(){var c=360/this.pc;var b=Garden.randomInt(0,90);for(var a=0;a<this.pc;a++){this.petals.push(new Petal(Garden.random(Garden.options.petalStretch.min,Garden.options.petalStretch.max),Garden.random(Garden.options.petalStretch.min,Garden.options.petalStretch.max),b+a*c,c,Garden.random(Garden.options.growFactor.min,Garden.options.growFactor.max),this))}}};function Garden(a,b){this.blooms=[];this.element=b;this.ctx=a}Garden.prototype={render:function(){for(var a=0;a<this.blooms.length;a++){this.blooms[a].draw()}},addBloom:function(a){this.blooms.push(a)},removeBloom:function(a){var d;for(var c=0;c<this.blooms.length;c++){d=this.blooms[c];if(d===a){this.blooms.splice(c,1);return this}}},createRandomBloom:function(a,b){this.createBloom(a,b,Garden.randomInt(Garden.options.bloomRadius.min,Garden.options.bloomRadius.max),Garden.randomrgba(Garden.options.color.rmin,Garden.options.color.rmax,Garden.options.color.gmin,Garden.options.color.gmax,Garden.options.color.bmin,Garden.options.color.bmax,Garden.options.color.opacity),Garden.randomInt(Garden.options.petalCount.min,Garden.options.petalCount.max))},createBloom:function(a,f,d,e,b){new Bloom(new Vector(a,f),d,e,b,this)},clear:function(){this.blooms=[];this.ctx.clearRect(0,0,this.element.width,this.element.height)}};Garden.options={petalCount:{min:8,max:15},petalStretch:{min:0.1,max:3},growFactor:{min:0.1,max:1},bloomRadius:{min:8,max:10},density:10,growSpeed:1000/60,color:{rmin:128,rmax:255,gmin:0,gmax:128,bmin:0,bmax:128,opacity:0.1},tanAngle:60};Garden.random=function(b,a){return Math.random()*(a-b)+b};Garden.randomInt=function(b,a){return Math.floor(Math.random()*(a-b+1))+b};Garden.circle=2*Math.PI;Garden.degrad=function(a){return Garden.circle/360*a};Garden.raddeg=function(a){return a/Garden.circle*360};Garden.rgba=function(f,e,c,d){return"rgba("+f+","+e+","+c+","+d+")"};Garden.randomrgba=function(i,n,h,m,l,d,k){var c=Math.round(Garden.random(i,n));var f=Math.round(Garden.random(h,m));var j=Math.round(Garden.random(l,d));var e=5;if(Math.abs(c-f)<=e&&Math.abs(f-j)<=e&&Math.abs(j-c)<=e){return Garden.rgba(i,n,h,m,l,d,k)}else{return Garden.rgba(c,f,j,k)}};
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hhh.com/2019/11/10/js/garden/" data-id="ck2slh9fe0006lz8e5inba47q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/10/js/functions/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          js/functions
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/10/js/jquery/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">js/jquery</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/11/10/test/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/10/js/functions_dev/">js/functions_dev</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/10/js/functions/">js/functions</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/10/js/garden/">js/garden</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/10/js/jquery/">js/jquery</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 胡灰灰<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
